@@ -27,6 +27,14 @@ void acceptor () {
 		exit (error_404);
 	}
 
+	fd_data = open(fifo_data, O_RDONLY | O_NDELAY);
+	if (fd_data < 0 && errno != ENOENT) {
+		perror("open()");
+		exit (error_404);
+	}
+
+	//
+
 	printf ("\n%s\n\n", fifo_data);
 
 	printf ("creation fifo_trader success\n\n");
@@ -35,13 +43,7 @@ void acceptor () {
 
 	printf ("success connection\n\n");
 
-
-	fd_data = open(fifo_data, O_RDONLY | O_NDELAY);
-	if (fd_data < 0 && errno != ENOENT) {
-		perror("open()");
-		exit (error_404);
-	}
-
+	//sleep(1);
 
 	accept_file (&fd_data);
 
@@ -68,7 +70,6 @@ void trasmitter_connection (int fd_trader) {
 }
 
 void accept_file (int* fd_data) {
-
 	fd_set nfds;
 	struct timeval waiting = {timeout, 0};
 	int select_res;
@@ -87,7 +88,7 @@ void accept_file (int* fd_data) {
 			exit(error_404);
 		default:;
 	}
-
+	
 	if (fcntl(*fd_data, F_SETFL, O_RDONLY)) {
 		perror("fcntl()");
 		exit(error_404);

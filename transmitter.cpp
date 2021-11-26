@@ -33,6 +33,7 @@ void transmitter (char* path) {
 
 	printf("creation fifo_trader success\n\n");
 
+
 	acceptor_connection (fifo_data, fd_trader, &pid_acceptor);
 
 	printf ("success connection\n\n");
@@ -45,7 +46,7 @@ void transmitter (char* path) {
 
 	printf ("%s\n\n", fifo_data);
 
-	fd_data = open (fifo_data, O_WRONLY | O_NDELAY);
+	fd_data = open (fifo_data, O_WRONLY );
 	if (fd_data < 0) {
 		perror("open()");
 		exit (error_404);
